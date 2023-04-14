@@ -1,5 +1,6 @@
 package com.prac.spring.Controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,14 +13,17 @@ import com.prac.spring.Model.TacoOrder;
 import com.prac.spring.Repository.OrderRepository;
 
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
+@Slf4j
 @RequestMapping("/ordersjdbc")
 @SessionAttributes("tacoOrder")
 public class OrderControllerJdbc {
 
     private OrderRepository orderRepo;
 
+    @Autowired
     public OrderControllerJdbc(OrderRepository orderRepo) {
         this.orderRepo = orderRepo;
     }
@@ -36,6 +40,7 @@ public class OrderControllerJdbc {
         }
 
         orderRepo.save(order);
+        log.info("Order submitted: {}", order);
         sessionStatus.setComplete();
 
         return "redirect:/";
