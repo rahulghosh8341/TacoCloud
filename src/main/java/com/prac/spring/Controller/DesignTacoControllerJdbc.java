@@ -29,7 +29,6 @@ public class DesignTacoControllerJdbc {
 
     private final IngredientRepository ingredientRepo;
 
-    @Autowired
     public DesignTacoControllerJdbc(IngredientRepository ingredientRepo) {
         this.ingredientRepo = ingredientRepo;
     }
@@ -37,7 +36,7 @@ public class DesignTacoControllerJdbc {
     @ModelAttribute
     public void addIngredientsToModel(Model model) {
         List<Ingredient> ingredients = new ArrayList<>();
-        ingredientRepo.findAll().forEach(i -> ingredients.add(i));
+        ingredientRepo.findAll().forEach(ingredients::add);
 
         Type[] types = Ingredient.Type.values();
         for (Type type : types) {

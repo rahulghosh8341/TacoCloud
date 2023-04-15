@@ -1,6 +1,5 @@
 package com.prac.spring.Controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +12,6 @@ public class IngredientByIdConverterJdbc implements Converter<String, Ingredient
 
     private IngredientRepository ingredientRepo;
 
-    @Autowired
     public IngredientByIdConverterJdbc(IngredientRepository ingredientRepo) {
         this.ingredientRepo = ingredientRepo;
     }
