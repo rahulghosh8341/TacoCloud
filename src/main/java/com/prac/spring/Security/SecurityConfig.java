@@ -3,7 +3,12 @@ package com.prac.spring.Security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationProvider;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.authentication.configurers.userdetails.DaoAuthenticationConfigurer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -16,6 +21,7 @@ import com.prac.spring.Model.User;
 import com.prac.spring.Repository.UserRepository;
 
 @Configuration
+@EnableWebSecurity
 public class SecurityConfig {
 
     @Bean
@@ -40,13 +46,8 @@ public class SecurityConfig {
     private UserDetailsService userDetailsService;
 
     @Bean
-    public UserDetailsService userDetailsService(UserRepository userRepo) {
-        return username -> {
-            User user = userRepo.findByUsername(username);
-            if (user != null)
-                return user;
-            throw new UsernameNotFoundException("User '" + username + "' not found");
-        };
+    public UserDetailsService userDetailsService() {
+        return new UserRepositoryUserDetailsService();
     }
 
     @Bean
@@ -56,15 +57,26 @@ public class SecurityConfig {
                 .headers().frameOptions().disable()
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers(antMatcher("/h2-console/**")).permitAll()
-                .requestMatchers("/designjdbc", "/ordersjdbc").hasRole("USER")
+                .requestMatchers(antMatcher("/h2-console/**"), antMatcher("/register")).permitAll()
                 .requestMatchers("/", "/**").permitAll()
+                .requestMatchers("/designjdbc", "/ordersjdbc","/design","/orders").authenticated()
                 .and()
-                .logout(logout -> logout
-                        .logoutSuccessUrl("/"))
-                .formLogin(login -> login
-                        .loginPage("/login"));
+                .formLogin().loginPage("/login").defaultSuccessUrl("/designjdbc",true)
+                .and()
+                .logout()
+                .logoutSuccessUrl("/")
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID");
         return http.build();
+    }
+
+    @Bean
+    public AuthenticationProvider authenticationProvider() {
+        DaoAuthenticationProvider daoauthenticationProvider = new DaoAuthenticationProvider();
+        daoauthenticationProvider.setUserDetailsService(userDetailsService());
+        daoauthenticationProvider.setPasswordEncoder(passwordEncoder());
+        return daoauthenticationProvider;
+
     }
 
 }

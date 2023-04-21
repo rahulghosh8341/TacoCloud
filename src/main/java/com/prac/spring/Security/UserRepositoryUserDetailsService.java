@@ -9,15 +9,16 @@ import org.springframework.stereotype.Service;
 import com.prac.spring.Model.User;
 import com.prac.spring.Repository.UserRepository;
 
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class UserRepositoryUserDetailsService implements UserDetailsService {
 
-  private UserRepository userRepo;
-
   @Autowired
-  public UserRepositoryUserDetailsService(UserRepository userRepo) {
-    this.userRepo = userRepo;
-  }
+  private UserRepository userRepo;
 
   @Override
   public UserDetails loadUserByUsername(String username)

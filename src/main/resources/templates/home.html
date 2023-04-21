@@ -7,10 +7,14 @@
     <title>Taco Cloud</title>
   </head>
   <body>
+    <a th:href="@{/login}" id="login">Login</a>
+    <form method="POST" th:action="@{/logout}" id="logoutForm">
+      <input type="submit" value="Logout"/>
+    </form>
     <h1>Welcome to <b>Taco Cloud</b></h1>
     <img
       th:src="@{https://cdn.vox-cdn.com/thumbor/MbdZg5LgU_dl9jro4SD36vSwvVE=/0x0:640x480/1200x800/filters:focal(269x189:371x291)/cdn.vox-cdn.com/uploads/chorus_image/image/63709636/taco-bell.0.1462605757.0.png}"
     />
-    <a th:href="@{/design}" id="design">Design a taco</a>
+    <a th:href="@{/designjdbc}" id="design">Design a taco</a>
   </body>
 </html>
