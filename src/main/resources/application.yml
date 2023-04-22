@@ -1,0 +1,12 @@
+spring:
+    security:
+        oauth2:
+            client:
+                registration:
+                    google:
+                        clientId: 790773453834-2bkqf6i32mtnb6fijm4bvgn419ih48tp.apps.googleusercontent.com
+                        clientSecret: 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
+    datasource:
+        generate-unique-name: false
+        name: tacocloud
+    
