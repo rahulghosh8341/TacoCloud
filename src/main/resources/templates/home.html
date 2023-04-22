@@ -7,7 +7,8 @@
     <title>Taco Cloud</title>
   </head>
   <body>
-    <a th:href="@{/login}" id="login">Login</a>
+    <a th:href="@{/login}" id="login">Login</a><br>
+    <!-- <a th:href="@{/oauth2/authorization/google}">Sign in with Google</a> -->
     <form method="POST" th:action="@{/logout}" id="logout">
       <input type="submit" value="Logout"/>
     </form>
@@ -18,3 +19,5 @@
     <a th:href="@{/designjdbc}" id="design">Design a taco</a>
   </body>
 </html>
+
+

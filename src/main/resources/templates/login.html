@@ -7,17 +7,24 @@
     <title>Taco Cloud</title>
   </head>
   <body>
-    <h1>Login</h1>
-    <div th:if="${error}">
-      Unable to login. Check your username and password.
-    </div>
+    <h1>Register</h1>
+    
     <p>New here? Click <a th:href="@{/register}">here</a> to register.</p>
-    <form method="POST" th:action="@{/login}" id="loginForm">
-      <label for="username">Username: </label>
-      <input type="text" name="username" id="username" /><br />
-      <label for="password">Password: </label>
-      <input type="password" name="password" id="password" /><br />
-      <input type="submit" value="Login" />
+
+    <hr>
+   <h1>Login</h1>
+  
+    <div th:if="${param.error}">
+            <p style="color: red;">Incorrect username or password</p>
+        </div>
+    <form th:action="@{/login}" method="post">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" /><br/><br/>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" /><br/><br/>
+        <button type="submit">Login</button>
     </form>
+    <br/><br/>
+    <a th:href="@{/oauth2/authorization/google}">Login with Google</a>
   </body>
 </html>

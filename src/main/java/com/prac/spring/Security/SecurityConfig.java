@@ -42,12 +42,11 @@ public class SecurityConfig {
     // return new InMemoryUserDetailsManager(usersList);
     // }
 
-
     @Bean
     public UserDetailsService userDetailsService() {
         return new UserRepositoryUserDetailsService();
     }
-// 59D23FC70D196AAE41C75B97F8577725
+
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -55,13 +54,21 @@ public class SecurityConfig {
                 .headers().frameOptions().disable()
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/designjdbc","/orderjdbc/**").authenticated()
+                .requestMatchers("/designjdbc", "/orderjdbc/**").authenticated()
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/designjdbc", true)
+                .permitAll()
+                .and()
+                .oauth2Login()
+                .loginPage("/login")
+                .defaultSuccessUrl("/designjdbc", true)
+                .permitAll()
                 .and()
                 .authorizeHttpRequests()
                 .requestMatchers("/h2-console/**", "/register", "/error").permitAll()
                 .requestMatchers("/", "/**").permitAll()
-                .and()
-                .formLogin().defaultSuccessUrl("/designjdbc",true)
                 .and()
                 .logout()
                 .invalidateHttpSession(true)
