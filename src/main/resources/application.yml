@@ -9,4 +9,6 @@ spring:
     datasource:
         generate-unique-name: false
         name: tacocloud
-    
+    data:
+        rest:
+            base-path: /data-api
