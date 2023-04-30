@@ -3,6 +3,7 @@ package com.prac.spring.Security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configurers.userdetails.DaoAuthenticationConfigurer;
@@ -54,8 +55,13 @@ public class SecurityConfig {
                 .headers().frameOptions().disable()
                 .and()
                 .authorizeHttpRequests()
-                .requestMatchers("/designjdbc", "/orderjdbc/**").authenticated()
+                    .requestMatchers("/designjdbc", "/orderjdbc/**").authenticated()
                 .and()
+                .authorizeHttpRequests()
+                    .requestMatchers(HttpMethod.POST, "/api/ingredients").hasAnyAuthority("SCOPE_writeIngredients")
+                    .requestMatchers(HttpMethod.DELETE, "/api/ingredients").hasAuthority("SCOPE_deleteIngredients")
+                .and()
+                .oauth2ResourceServer(oauth -> oauth.jwt())
                 .formLogin()
                 .loginPage("/login")
                 .defaultSuccessUrl("/designjdbc", true)
